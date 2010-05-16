@@ -1,0 +1,25 @@
+
+
+my $cutout_url='http://www.isdc.unige.ch/vo-services/img-cutout$POS=83.6%2C22&SIZE=20,20&FORMAT=image%2Ffits';
+
+# GET request with params
+    
+# POS
+# SIZE
+# FORMAT
+
+my $mosaic_url='http://www.isdc.unige.ch/vo-services/img-mosaic?Axis_A=83.610076&amp;Axis_B=21.998726&amp;Size_A=20&amp;Size_B=20&amp;Instrument=JEMX&amp;ImageType=SIGNIFICANCE&amp;Emin=25.88&amp;Emax=34.88';
+
+
+Axis_A
+Axis_B
+Size_A
+Size_B
+Instrument
+ImageType "INTENSITY" or "VARIANCE" or "EXPOSURE" or "SIGNIFICANCE"
+Emin
+Emax
+
+my $retrieve_url='http://www.isdc.unige.ch/vo-services/img-retrieve/vo-data/sources/Cyg_X-1/integral_isgri/Cyg_X-1_image.fits';
+
+my $pointed_url='http://www.isdc.unige.ch/vo-service/img-pointed$POS=288.8%2C10.9&SIZE=20,20&FORMAT=image%2Ffits';
