@@ -23,3 +23,29 @@ Emax
 my $retrieve_url='http://www.isdc.unige.ch/vo-services/img-retrieve/vo-data/sources/Cyg_X-1/integral_isgri/Cyg_X-1_image.fits';
 
 my $pointed_url='http://www.isdc.unige.ch/vo-service/img-pointed$POS=288.8%2C10.9&SIZE=20,20&FORMAT=image%2Ffits';
+
+
+
+
+Reference output from wcs_pixels_params
+---------------------------------------
+
+    Axis_A=266.404996
+    Axis_B=-28.936172
+    Size_A=20
+    Size_B=20
+    Scale_A=0.025000
+    Scale_B=0.025000
+    CoordRefFrame=FK5
+    CoordEquinox=2000
+    CoordProjection=CEA
+    CoordRefPixel_A=10.5
+    CoordRefPixel_B=10.5
+    CoordRefValue_A=0.000000
+    CoordRefValue_B=0.000000
+    CD1_1=-0.0250000000000000
+    CD1_2=0.0000000000000000
+    CD2_1=0.0000000000000000
+    CD2_2=0.0250000000000000
+
+
