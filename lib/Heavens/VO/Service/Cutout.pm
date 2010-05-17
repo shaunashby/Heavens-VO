@@ -19,7 +19,7 @@ sub new(){
     my $proto = shift;
     my $class = ref($proto) || $proto;
     my $self = bless({} => $class);
-    %self->SUPER::register_command(SERVICE_EXECUTABLE,"");
+    $self->SUPER::register_command(SERVICE_EXECUTABLE,"");
     return $self;
 }
 
