@@ -27,6 +27,7 @@ sub new() {
 	} => $class);
 }
 
+sub query_status() { }
 
 sub error() {
 }
@@ -36,13 +37,15 @@ sub render() {
     
 }
 
+sub nrows() {}
+
 1;
 
 __END__
 <VOTABLE xmlns="http://www.ivoa.net/xml/VOTable/v1.1" version="1.1">
   <RESOURCE type="results">
-    <INFO name="QUERY_STATUS" value="[% VO_QUERY_STATUS %]"/>
-    <TABLE nrows="[% VO_RESULTS_NROWS %]">
+    <INFO name="QUERY_STATUS" value="[% votable.query_status %]"/>
+    <TABLE nrows="[% votable.nrows %]">
       <FIELD name="Title" datatype="char" arraysize="*" ucd="VOX:Image_Title">
         <DESCRIPTION>Image title</DESCRIPTION>
       </FIELD>
