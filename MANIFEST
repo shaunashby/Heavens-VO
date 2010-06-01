@@ -1,0 +1,9 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+lib/VO/Config.pm
+lib/VO/Result.pm
+lib/VO/Service/Cutout.pm
+lib/VO/Table.pm
+t/00-load.t

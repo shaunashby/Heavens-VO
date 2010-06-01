@@ -1,0 +1,30 @@
+---
+instruments:
+  isgri:
+    images:
+    - title: 17.8-80.0 keV ISGRI significance image
+      imagetype: SIGNIFICANCE
+      bpmodelenergy: 48.648
+      emin: 17.278
+      emax: 80.018
+    - title: 80.0-250 keV ISGRI significance image
+      imagetype: SIGNIFICANCE
+      bpmodelenergy: 164.98725
+      emin: 80.018
+      emax: 249.9565
+  jemx:
+    images:
+    - title: 3.0-10.2 keV JEM-X significance image
+      imagetype: SIGNIFICANCE
+      bpmodelenergy: 6.64
+      emin: 3.04
+      emax: 10.24
+    - title: 10.2-34.9 keV JEM-X significance image
+      imagetype: SIGNIFICANCE
+      bpmodelenergy: 22.56
+      emin: 10.24
+      emax: 34.88
+---
+comments:
+	This document is in YAML format so keep to the exact structure
+	as above when adding new image configuration data.

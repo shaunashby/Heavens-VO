@@ -1,0 +1,10 @@
+
+Module Starter
+--------------
+
+- good way to set up a skeleton CPAN-compatible module structure:
+
+module-starter --dist=Heavens-VO --module VO::Service::Cutout,VO::Config,VO::Table,VO::Result --author="Shaun ASHBY" --email="shuan.ashby@unige.ch" 
+
+- This will create the namespaces VO and VO/Service.
+
