@@ -51,7 +51,7 @@ sub new() {
     my $class = ref($proto) || $proto;
     my $params = (@_ == 0) ?             # Error if no params given
 	croak("No params arg given.") :  (ref($_[0]) eq 'HASH') ? shift
-	: croak("WCS model requires hash of parameters.");
+	: croak("WCS model requires hash of parameters for the wrapped executable.");
     
     for my $required qw(instrument axis_ra axis_dec size_ra size_dec) {
 	if (!$params->{$required}) {

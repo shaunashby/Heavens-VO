@@ -18,7 +18,7 @@ use Carp qw(croak);
 use YAML::Syck qw(Load);
 use Path::Class::File;
 
-use VO::Config;
+use VO::Config qw(:config);
 use VO::Exception;
 
 sub new() {
