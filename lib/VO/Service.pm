@@ -32,17 +32,20 @@ sub new() {
 	: croak("Needs a parameter hash ref.");
 
     # Read the service configuration and connect it to the service:
-    $self->{service_config} = Load(Path::Class::File->new(HEAVENS_SERVICE_CONFIG_FILE)->slurp);
+    my $srvfile = Path::Class::File->new(HEAVENS_SERVICE_CONFIG_FILE);
+    my $srvdef = $srvfile->slurp;
+    # Store the service configuration in the application context:
+    $self->{context}->{service_config} = Load($srvdef);
 
     return bless($self,$class);
 }
 
-sub config() { return shift->{service_config}; }
+sub config() { return shift->{context}->{service_config}; }
 
 sub error() {
     my $self = shift;
     my ($errmsg) = @_;
-    push(@{ $self->{context}->{errors} }, VO::Exception->new({ errmsg => $errmsg }));
+    push(@{ $self->{context}->{errors} }, VO::Exception->new($errmsg));
 }
 
 sub status() { return $#{ shift->{context}->{errors} } + 1; }

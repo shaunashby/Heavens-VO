@@ -16,26 +16,43 @@ use warnings;
 
 use Carp qw(croak);
 
+use VO::Model::WCS;
+
 use constant DEFAULT_RESULT_TYPE => 'image';
 use constant DEFAULT_RESULT_IMAGE_TYPE => 'SIGNIFICANCE';
+
+use base 'VO::Model';
 
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
-    return bless({},$class);
-}
-
-sub search() {
-    my $self = shift;
     my $params = (@_ == 0) ?             # Error if no params given
  	croak("No params arg given.\n")
  	: (ref($_[0]) eq 'HASH') ? shift
- 	: croak("Image search needs a parameter hash ref arg.");
+ 	: croak("Image model constructor needs a parameter hash ref arg.");
+   
+    my $self = VO::Model::WCS->new($params);
+    # Extract the required image parameters from the params. These
+    # are values for which there are no sensible defaults so we
+    # expect them to be passed to the constructor.
+    for my $att (qw(title bpmodelenergy emin emax)) {
+	if (!exists($params->{$att})) {
+	    croak("Image must have $att parameter.");
+	}
+	$self->{$att} = $params->{$att};
+    }
+
+    # These parameters have defaults so we only modify them if
+    # they are provided as arguments to the constructor:
+    if (exists($params->{imagetype})) {
+	$self->{imagetype} = $params->{imagetype};
+    }
     
-    # Populate the WCS parameters:
-#    $self->SUPER::search(@_);
-    
-    
+    if (exists($params->{bandpass})) {
+	$self->{bandpass} = $params->{bandpass};
+    }
+
+    return bless($self,$class);
 }
 
 sub type() { return shift->{type} || DEFAULT_RESULT_TYPE; }
@@ -52,7 +69,7 @@ sub instrument() { return shift->{instrument}; }
 
 sub imagetype() { return shift->{imagetype} || DEFAULT_RESULT_IMAGE_TYPE; }
 
-sub bandpass() { return shift->{bandpass}; }
+sub bandpass() { return shift->{bandpass} || 'INTEGRAL'; }
 
 sub bpmodelenergy() { return shift->{bpmodelenergy}; }
 
@@ -63,45 +80,6 @@ sub emax() { return shift->{emax}; }
 1;
 
 __END__
-  # @{$_[0]} = (
-  #   {
-  #     Title         => "17.8-80.0 keV ISGRI significance image",
-  #     Instrument    => "ISGRI",
-  #     ImageType     => "SIGNIFICANCE",
-  #     Bandpass      => "INTEGRAL",
-  #     BPModelEnergy => "48.648",
-  #     Emin          => "17.278",
-  #     Emax          => "80.018",
-  #   },
-  #   {
-  #     Title         => "80.0-250 keV ISGRI significance image",
-  #     Instrument    => "ISGRI",
-  #     ImageType     => "SIGNIFICANCE",
-  #     Bandpass      => "INTEGRAL",
-  #     BPModelEnergy => "164.98725",
-  #     Emin          => "80.018",
-  #     Emax          => "249.9565",
-  #   },
-  #   {
-  #     Title         => "3.0-10.2 keV JEM-X significance image",
-  #     Instrument    => "JEMX",
-  #     ImageType     => "SIGNIFICANCE",
-  #     Bandpass      => "INTEGRAL",
-  #     BPModelEnergy => "6.64",
-  #     Emin          => "3.04",
-  #     Emax          => "10.24",
-  #   },
-  #   {
-  #     Title         => "10.2-34.9 keV JEM-X significance image",
-  #     Instrument    => "JEMX",
-  #     ImageType     => "SIGNIFICANCE",
-  #     Bandpass      => "INTEGRAL",
-  #     BPModelEnergy => "22.56",
-  #     Emin          => "10.24",
-  #     Emax          => "34.88",
-  #   },
-  # );
-
 
     # Using a protocol module
     # -----------------------

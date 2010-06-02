@@ -42,10 +42,6 @@ sub get() {
     return $self->{$attribute_name} if ($self->{$attribute_name});
 }
 
-# sub provider() { return shift->{provider}; }
-
-# sub _get_data_from_provider() { croak("_get_data_from_provider() must be overridden in sub-class."); }
-
 sub attributes() { return shift->{attributes}; }
 
 1;

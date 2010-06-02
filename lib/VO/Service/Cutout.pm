@@ -10,6 +10,7 @@ use base 'VO::Service';
 our $VERSION = '0.01';
 
 use constant DEFAULT_CUTOUT_IMAGE_SIZE => 20;
+use constant DEFAULT_CUTOUT_IMAGE_MAX_SIZE => 40;
 
 sub new() {
     my $proto = shift;
@@ -33,7 +34,7 @@ sub image_query() {
 	}
 	
 	if ( (-90 >= $axis_dec) || (90 <= $axis_dec) ) {
-	    $self->error("DEC must be in the range -90,90. ");
+	    $self->error("DEC must be in the range -90,90.");
 	}
     } else {
 	# Throw an error: must have position:
@@ -42,12 +43,16 @@ sub image_query() {
     
     if (exists($options->{size})) {
 	($size_ra, $size_dec) = split(",", $options->{size});
-	$size_dec ||= $size_ra; # Same value for both axes if only one given 
+	$size_dec ||= $size_ra; # Same value for both axes if only one given
+	# Check to make sure that the size parameter is within limits for the service:
+	if ($size_ra > DEFAULT_CUTOUT_IMAGE_MAX_SIZE || $size_dec > DEFAULT_CUTOUT_IMAGE_MAX_SIZE) {
+	    $self->error("SIZE exceeds maximum allowed image size.");
+	}
     } else {
 	# Default size:
 	$size_ra = $size_dec = DEFAULT_CUTOUT_IMAGE_SIZE;
     }
-	
+    
     # Value of INTERSECTS parameter:
     $intersects = 'OVERLAPS';
     if (exists($options->{intersects}) && $options->{intersects} =~ /COVERS|ENCLOSED|CENTER|OVERLAPS/) {
@@ -79,15 +84,13 @@ sub image_query() {
 	$format = $options->{format};
     }
     
-    # Do the search using the model:
+    # Do the search using the model. Display results for the image configuration we specify in
+    # the service definition (service.yml) which will be read by the VO::Service base class
+    # and stored in the service_config attribute within the context. Access this using the config() method:
     my $resultset = [];
-    for my $instrument (qw/ISGRI JEMX/) {
-	push(@$resultset,VO->model('VO::Model::Image',{ axis_ra  => $axis_ra,
-							axis_dec => $axis_dec,
-							size_ra  => $size_ra,
-							size_dec => $size_dec,
-							instrument => $instrument } )->search() );
-    }
+    my $site_config = $self->config;
+
+    
 }
 
 1;

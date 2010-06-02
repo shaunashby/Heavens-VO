@@ -17,10 +17,10 @@ use warnings;
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
-    return bless({ errmsg => shift }, $class);
+    return bless({ what => shift }, $class);
 }
 
-sub errmsg() { return shift->{errmsg}; }
+sub what() { return shift->{what}; }
 
 1;
 
