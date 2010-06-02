@@ -30,7 +30,6 @@ sub new() {
 sub search() {
     my $self = shift;
     my ($service_config,$params,$opts) = @_;
-    my $model = $self->{model};
     
     # Loop over the service context and create objects for the provided images:
     for my $instrument ( keys %{ $service_config->{instruments} } ) {
@@ -38,11 +37,9 @@ sub search() {
 	    push(@{$self->{rows}},
 		 VO->model($self->model_name,{ %$params,
 					       instrument => $instrument,
-					       %$img_config, });
-		);
+					       %$img_config, }) );
 	}
     }
-    
     return $self;
 }
 

@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 12;
+use Test::More tests => 13;
 
 BEGIN {
     use_ok( 'VO::Config' );
@@ -10,7 +10,8 @@ BEGIN {
     use_ok( 'VO::Model::WCS' );
     use_ok( 'VO::Model' );
     use_ok( 'VO::Provider' );
-    use_ok( 'VO::Result' );
+    use_ok( 'VO::ResultSet' );
+    use_ok( 'VO::ResultSet::Image' );
     use_ok( 'VO::Service::Cutout' );
     use_ok( 'VO::Service' );
     use_ok( 'VO::Table' );

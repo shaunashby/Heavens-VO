@@ -21,9 +21,9 @@ sub new() {
     my $class = ref($proto) || $proto;
     my $model = (@_ == 0) ?
 	croak("First argument to ResultSet must be a model name.")
-	: ($model =~ /VO::Model/) ? shift
+	: ($_[0] =~ /VO::Model/) ? shift
 	: croak("Model is not in the VO::Model namespace.");  
-    return bless({ model_name => $model, rows => [], nrows => sub { return $#${ shift->{rows} + 1 } } }, $class);    
+    return bless({ model_name => $model, rows => [], nrows => sub { return $#${ shift->{rows} + 1 } } }, $class);
 }
 
 sub search() { croak("ResultSet search() method must be overriden in sub-classes."); }
