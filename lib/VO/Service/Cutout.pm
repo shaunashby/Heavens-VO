@@ -7,6 +7,8 @@ use VO;
 
 use base 'VO::Service';
 
+use VO::ResultSet::Image;
+
 our $VERSION = '0.01';
 
 use constant DEFAULT_CUTOUT_IMAGE_SIZE => 20;
