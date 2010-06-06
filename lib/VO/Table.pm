@@ -9,12 +9,13 @@ our $VERSION = '0.01';
 use constant VO_QUERY_STATUS_OK       => 'OK';
 use constant VO_QUERY_STATUS_ERROR    => 'ERROR';
 use constant VO_QUERY_STATUS_OVERFLOW => 'OVERFLOW';
+use constant VO_TEMPLATE_PATH => 'templates/tt2';
 
 use Template;
 
 use VO::Config qw(:config);
 
-use overload q{""} => \&render();
+use overload q{""} => \&render;
 
 sub new() {
     my $proto = shift;
