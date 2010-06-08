@@ -32,15 +32,18 @@ sub image_query() {
 	($axis_ra, $axis_dec) = split(",", $options->{pos});
 	# Validate the RA/DEC values:
 	if ( (0 >= $axis_ra) || (360 < $axis_ra) ) {
-	    $self->error("RA must be in the range 0,360.");
+	    $self->error(VO::QueryStatus::ERROR,"RA must be in the range 0,360.");
+	    return;
 	}
 	
 	if ( (-90 >= $axis_dec) || (90 <= $axis_dec) ) {
-	    $self->error("DEC must be in the range -90,90.");
+	    $self->error(VO::QueryStatus::ERROR,"DEC must be in the range -90,90.");
+	    return;
 	}
     } else {
 	# Throw an error: must have position:
-	$self->error("Position parameter POS must be provided.");
+	$self->error(VO::QueryStatus::ERROR,"Position parameter POS must be provided.");
+	return;
     }
     
     if (exists($options->{size})) {
@@ -48,7 +51,8 @@ sub image_query() {
 	$size_dec ||= $size_ra; # Same value for both axes if only one given
 	# Check to make sure that the size parameter is within limits for the service:
 	if ($size_ra > DEFAULT_CUTOUT_IMAGE_MAX_SIZE || $size_dec > DEFAULT_CUTOUT_IMAGE_MAX_SIZE) {
-	    $self->error("SIZE exceeds maximum allowed image size.");
+	    $self->error(VO::QueryStatus::OVERFLOW,"SIZE exceeds maximum allowed image size.");
+	    return;
 	}
     } else {
 	# Default size:

@@ -17,8 +17,10 @@ use warnings;
 sub new() {
     my $proto = shift;
     my $class = ref($proto) || $proto;
-    return bless({ what => shift }, $class);
+    return bless({ type => shift || 'default', what => shift }, $class);
 }
+
+sub type() { return shift->{type}; }
 
 sub what() { return shift->{what}; }
 

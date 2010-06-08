@@ -1,20 +1,21 @@
 #!perl -T
 
-use Test::More tests => 7;
+use Test::More tests => 5;
 
+use VO::Context;
 use VO::Table;
+use VO::QueryStatus qw(:common);
 
-my $votable = VO::Table->new();
+my $context = VO::Context->new;
+my $votable = VO::Table->new({ context => $context });
 
 ok(ref($votable) eq 'VO::Table',"Instantiation of VO::Table.");
-ok($votable->can('query_status'),"Class supports query_status method.");
-ok($votable->can('render'),"Class supports render method.");
-ok($votable->query_status eq VO::Table::VO_QUERY_STATUS_OK,"query_status method works.");
+ok($votable->query_status eq OK,"query_status method works.");
 
 # Change the query status:
-$votable->query_status(VO::Table::VO_QUERY_STATUS_ERROR);
+$votable->query_status(ERROR);
 
-ok($votable->query_status eq VO::Table::VO_QUERY_STATUS_ERROR,"query_status method works after changes.");
+ok($votable->query_status eq ERROR,"query_status method works after changes.");
 
 isa_ok($votable,'VO::Table');
 can_ok($votable,qw(render query_status));

@@ -42,6 +42,6 @@ $service2->image_query( { pos    => $POS,
                           intersect => $INTERSECT } );    
 
 # Dump the errors from the context:
-isa_ok($context2->errors->[1],'VO::Exception');
-can_ok($context2->errors->[1],'what');
-ok($context2->errors->[1]->what eq "DEC must be in the range -90,90.","Error message is correct for out-of-range DEC value in POS $POS.");
+isa_ok($context2->errors->[0],'VO::Exception');
+can_ok($context2->errors->[0],'what');
+ok($context2->errors->[0]->what eq "DEC must be in the range -90,90.","Error message is correct for out-of-range DEC value in POS $POS.");

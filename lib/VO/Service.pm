@@ -40,12 +40,14 @@ sub new() {
     return bless($self,$class);
 }
 
+sub context() { return shift->{context}; }
+
 sub config() { return shift->{context}->{service_config}; }
 
 sub error() {
     my $self = shift;
-    my ($errmsg) = @_;
-    push(@{ $self->{context}->{errors} }, VO::Exception->new($errmsg));
+    my ($type,$errmsg) = @_;
+    push(@{ $self->{context}->{errors} }, VO::Exception->new($type,$errmsg));
 }
 
 sub status() { return $#{ shift->{context}->{errors} } + 1; }
