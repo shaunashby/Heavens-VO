@@ -5,6 +5,8 @@ use Test::More tests => 7;
 use VO;
 use VO::Service::Cutout;
 
+$ENV{WCS_TEST_MODE} = 1; # don't actually run the wcs executable since it hangs under test_harness.
+
 my $context1 = VO->context;
 my $service1 = VO::Service::Cutout->new({ context => $context1 });
 
@@ -34,7 +36,7 @@ my $context2 = VO->context;
 my $service2 = VO::Service::Cutout->new({ context => $context2 });
 
 # Check running query with out-of-range DEC too:
-$POS="379.,+123.3";
+$POS="299.6,+123.3";
 
 $service2->image_query( { pos    => $POS,
  			  size   => $SIZE,

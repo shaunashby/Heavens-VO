@@ -4,6 +4,8 @@ use Test::More tests => 2;
 
 use VO::Model::Image;
 
+$ENV{WCS_TEST_MODE} = 1; # don't actually run the wcs executable since it hangs under test_harness.
+
 # Create the model and run the search method: this will populate the attributes
 # of the class:
 my ($axis_ra, $axis_dec, $size_ra, $size_dec) = (83.6, 22., 20., 20.);

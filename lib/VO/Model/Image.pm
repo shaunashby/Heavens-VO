@@ -30,8 +30,10 @@ sub new() {
  	croak("No params arg given.\n")
  	: (ref($_[0]) eq 'HASH') ? shift
  	: croak("Image model constructor needs a parameter hash ref arg.");
-   
-    my $self = VO::Model::WCS->new($params);
+
+    # Populate the image with the WCS parameters:
+    my $self = VO::Model::WCS->new($params)->getData;
+    
     # Extract the required image parameters from the params. These
     # are values for which there are no sensible defaults so we
     # expect them to be passed to the constructor.

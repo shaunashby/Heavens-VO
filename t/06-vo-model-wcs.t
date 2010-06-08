@@ -14,5 +14,4 @@ my $model = VO::Model::WCS->new({ axis_ra  => $axis_ra,
 				  size_ra  => $size_ra,
 				  size_dec => $size_dec,
 				  instrument => $instrument });
-
-ok($model->can('search'),"Search method is defined.");
+can_ok($model,'getData');

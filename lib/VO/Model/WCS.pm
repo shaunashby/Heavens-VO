@@ -73,9 +73,19 @@ sub new() {
     return bless($self, $class);
 }
 
-sub search() {
+sub getData() {
     my ($self) = @_;
     $self->{wcs_data} = {}, if (!exists($self->{wcs_data}));
+    # Return some dummy results if under test mode (executable doesn't run properly under test_harness):
+    if ($ENV{WCS_TEST_MODE}) {
+	return $self->{wcs_data} = {
+	    cd1_1 => 1000.,
+	    cd1_2 => 1000.,
+	    cd2_1 => 1000.,
+	    cd2_2 => 1000
+	};
+    }
+    # Normal running:
     $self->{provider}->run( @{ $self->{args} } );
     # Store the data for the WCS attributes:
     map { chomp; my ($param,$value) = split("=",$_); $self->{wcs_data}->{lc($param)} = $value; } @{$self->{provider}->stdout};
