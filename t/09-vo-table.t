@@ -7,7 +7,7 @@ use VO::Table;
 use VO::QueryStatus qw(:common);
 
 my $context = VO::Context->new;
-my $votable = VO::Table->new({ context => $context });
+my $votable = VO::Table->new({ context => $context, template => 'vo-table-test.tpl' });
 
 ok(ref($votable) eq 'VO::Table',"Instantiation of VO::Table.");
 ok($votable->query_status eq OK,"query_status method works.");

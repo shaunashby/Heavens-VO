@@ -99,10 +99,10 @@ sub image_query() {
     my $resultset = VO::ResultSet::Image->new('VO::Model::Image');
 
     # Store the resultset in the context:
-    $self->context()->{results} = $resultset->search($self->config,{ axis_ra  => $axis_ra,
-								     axis_dec => $axis_dec,
-								     size_ra  => $size_ra,
-								     size_dec => $size_dec, });
+    $self->context()->{resultset} = $resultset->search($self->config,{ axis_ra  => $axis_ra,
+								       axis_dec => $axis_dec,
+								       size_ra  => $size_ra,
+								       size_dec => $size_dec, });
 }
 
 1;

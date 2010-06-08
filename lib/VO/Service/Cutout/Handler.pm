@@ -49,7 +49,7 @@ sub handler() {
 			     format => $FORMAT,
                              intersect => $INTERSECT } );
 
-    my $votable = VO::Table->new({ context => $context });
+    my $votable = VO::Table->new({ template => 'cutout/votable.tpl', context => $context });
 
     $votable->process($request) || do {
      	$request->log_reason($votable->error());

@@ -12,7 +12,7 @@ use Template;
 use VO::Config qw(:config);
 use VO::QueryStatus;
 
-#use overload q{""} => \&render;
+use overload q{""} => \&render;
 
 sub new() {
     my $proto = shift;
@@ -21,11 +21,6 @@ sub new() {
 	croak("No params given.\n")
 	: (ref($_[0]) eq 'HASH') ? shift
 	: croak("Needs a parameter hash ref");
-
-    # Check for a template:
-    if (!exists($self->{template})) {
-	croak("No template given as arg.");
-    }
     
     # Data which will be passed to the template engine:
     $self->{vodata} = {
@@ -37,9 +32,6 @@ sub new() {
     
     # Template config:
     $self->{tt} = Template->new( {
-	START_TAG => '[%',
-	END_TAG => '%]',
-	ABSOLUTE => 1,
 	INCLUDE_PATH => $ENV{VO_TEMPLATE_DIR} || VO_TEMPLATE_DIR,
      }) || die Template->error(),"\n";
 
@@ -52,19 +44,31 @@ sub query_status() {
 	: $self->{vodata}->{query_status};
 }
 
+sub error() { return sprintf("VO::Table::process: %s\n",shift->{tt}->error()); }
+
 sub render() {
     my $self = shift;
+    my $content = '';
+    
+    # Check for a template:
+    if (exists($self->{template})) {
+	$self->{tt}->process($self->{template}, $self->{vodata},\$content);
+    } else {
+	$self->{tt}->process(\*DATA, $self->{vodata},\$content);
+    }
+    return $content;
 }
-
-sub error() { return sprintf("VO::Table::process: %s\n",shift->{tt}->error()); }
 
 sub process() {
     my $self = shift;
-    my $output = shift || '/tmp/crap.out';
-    my $crap = {
-	query_status => 'dfdfddfdf',
-    };
-    $self->{tt}->process($self->{template},$crap,$output);
+    my $content = (ref($_[0]) eq 'SCALAR') ? shift : croak("process method takes ref to output variable.");
+    $self->{tt}->process(\*DATA, $self->{vodata},$content);
 }
 
 1;
+
+__DATA__
+QueryStatus: [% query_status %]
+[% FOREACH img IN context.resultset.rows %]
+[% INCLUDE voentry.tpl %]
+[% END %]

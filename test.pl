@@ -24,11 +24,13 @@ if ($cs->status) {
 }
 
 # Render test:
-my $tmpl = '/tmp/vo.tpl';
-my $votable = VO::Table->new({ template => $tmpl, context => $ctx });
-$votable->process() || die $votable->error;
+my $votable = VO::Table->new({ template => 'votable.tpl', context => $ctx });
+my $output = '';
 
+$votable->process(\$output) || die $votable->error;
+print $output,"\n";
 
+print "$votable","\n";
 __END__
 
 # {
