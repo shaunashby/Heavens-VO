@@ -8,6 +8,7 @@ use VO;
 use base 'VO::Service';
 
 use VO::ResultSet::Image;
+use VO::QueryStatus;
 
 our $VERSION = '0.01';
 
@@ -67,6 +68,7 @@ sub image_query() {
         # CENTER -- The candidate image overlaps the center of the ROI. 
         # OVERLAPS -- The candidate image overlaps some part of the ROI.
 	$intersects = $options->{intersects};
+	$self->context->{intersects} = $intersects;
     }
 
     # Value of FORMAT parameter:
@@ -88,6 +90,7 @@ sub image_query() {
 	#             should be returned. This feature is described in more detail in section 6.1. 
 	#
 	$format = $options->{format};
+	$self->context->{format} = $format;
     }
     
     # Do the search using a ResultSet to access data and return model objects. Display results for the image
@@ -95,11 +98,11 @@ sub image_query() {
     # and stored in the service_config attribute within the context. Access this using the config() method:
     my $resultset = VO::ResultSet::Image->new('VO::Model::Image');
 
-    # Either return the ResultSet or store it in the context?
-    return $resultset->search($self->config,{ axis_ra  => $axis_ra,
-					      axis_dec => $axis_dec,
-					      size_ra  => $size_ra,
-					      size_dec => $size_dec, });
+    # Store the resultset in the context:
+    $self->context()->{results} = $resultset->search($self->config,{ axis_ra  => $axis_ra,
+								     axis_dec => $axis_dec,
+								     size_ra  => $size_ra,
+								     size_dec => $size_dec, });
 }
 
 1;

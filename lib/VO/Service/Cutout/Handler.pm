@@ -17,10 +17,13 @@ use warnings;
 use Apache2::RequestRec ();
 use APR::Request::Apache2 ();
 
-use Apache2::Const -compile => qw(DECLINED OK);
+use Apache2::Const -compile => qw(DECLINED OK SERVER_ERROR);
 
 use VO::Model;
 use VO::Context;
+use VO::Service::Cutout;
+
+use VO::Table;
 
 sub handler() {
     my $r = shift;
@@ -44,9 +47,14 @@ sub handler() {
     $service->image_query( { pos    => $POS,
 			     size   => $SIZE,
 			     format => $FORMAT,
-                             intersect => $INTERSECT } );    
+                             intersect => $INTERSECT } );
 
-    my $votable = VO::Table->new($context);
+    my $votable = VO::Table->new({ context => $context });
+
+    $votable->process($request) || do {
+     	$request->log_reason($votable->error());
+	return Apache2::Const::SERVER_ERROR;
+    };
 
     return Apache2::Const::OK;
 }

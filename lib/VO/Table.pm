@@ -3,19 +3,16 @@ package VO::Table;
 use warnings;
 use strict;
 
-our $VERSION = '0.01';
+use Carp qw(croak);
 
-# Accepted VO query status flags:
-use constant VO_QUERY_STATUS_OK       => 'OK';
-use constant VO_QUERY_STATUS_ERROR    => 'ERROR';
-use constant VO_QUERY_STATUS_OVERFLOW => 'OVERFLOW';
-use constant VO_TEMPLATE_PATH => 'templates/tt2';
+our $VERSION = '0.01';
 
 use Template;
 
 use VO::Config qw(:config);
+use VO::QueryStatus;
 
-use overload q{""} => \&render;
+#use overload q{""} => \&render;
 
 sub new() {
     my $proto = shift;
@@ -25,44 +22,49 @@ sub new() {
 	: (ref($_[0]) eq 'HASH') ? shift
 	: croak("Needs a parameter hash ref");
 
-    $self->{VO_QUERY_STATUS} = VO_QUERY_STATUS_OK;
-    $self->{VO_PARAMETERS} = {};
+    # Check for a template:
+    if (!exists($self->{template})) {
+	croak("No template given as arg.");
+    }
     
+    # Data which will be passed to the template engine:
     $self->{vodata} = {
-	voentries => $self->{voentries},
+	query_status => VO::QueryStatus::OK, # Default query status is OK:
+	context   => $self->{context} || croak ("VO::Table: no context given as arg."),
     };
-    
-    # TT config:
-    $self->{tt} = Template->new(
-	config => {
-	    START_TAG => '[%',
-	    END_TAG => '%]',
-	    INCLUDE_PATH => $ENV{VO_TEMPLATE_PATH} || VO_TEMPLATE_PATH,
-	});
-    return bless($self,$class);
-}
 
-sub voentries { return shift->{entries}; }
+    bless($self,$class);
+    
+    # Template config:
+    $self->{tt} = Template->new( {
+	START_TAG => '[%',
+	END_TAG => '%]',
+	ABSOLUTE => 1,
+	INCLUDE_PATH => $ENV{VO_TEMPLATE_DIR} || VO_TEMPLATE_DIR,
+     }) || die Template->error(),"\n";
+
+    return $self;
+}
 
 sub query_status() {
     my $self = shift;
-    @_ ? $self->{VO_QUERY_STATUS} = shift
-       : $self->{VO_QUERY_STATUS};
+    @_ ? $self->{vodata}->{query_status} = shift
+	: $self->{vodata}->{query_status};
 }
 
 sub render() {
     my $self = shift;
 }
 
-sub write() {
+sub error() { return sprintf("VO::Table::process: %s\n",shift->{tt}->error()); }
+
+sub process() {
     my $self = shift;
-    my $output = shift || '';
-    $self->{tt}->process(\*DATA, $self->{data},$output) || die $self->{tt}->error();
+    my $output = shift || '/tmp/crap.out';
+    my $crap = {
+	query_status => 'dfdfddfdf',
+    };
+    $self->{tt}->process($self->{template},$crap,$output);
 }
 
 1;
-
-__DATA__
-[% FOREACH voentry IN voentries %]
-[% PROCESS voentry %]
-[% END %]
