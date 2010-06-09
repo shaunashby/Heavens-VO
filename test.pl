@@ -28,9 +28,10 @@ my $votable = VO::Table->new({ template => 'votable.tpl', context => $ctx });
 my $output = '';
 
 $votable->process(\$output) || die $votable->error;
-print $output,"\n";
 
+print $output,"\n";
 print "$votable","\n";
+
 __END__
 
 # {
