@@ -37,7 +37,7 @@ sub new() {
     # Extract the required image parameters from the params. These
     # are values for which there are no sensible defaults so we
     # expect them to be passed to the constructor.
-    for my $att (qw(title bpmodelenergy emin emax)) {
+    for my $att (qw(title bpmodelenergy emin emax instrument)) {
 	if (!exists($params->{$att})) {
 	    croak("Image must have $att parameter.");
 	}
