@@ -54,6 +54,15 @@ sub new() {
 	$self->{bandpass} = $params->{bandpass};
     }
 
+    # Calculate the file size:
+    my $bytesPerPixel    = 4;
+    my $blockSize        = 2880;
+    my $headerSizeBlocks = 3;
+    my $imgSizeBytes     = $self->{wcs_data}->{size_a} * $self->{wcs_data}->{size_b} * $bytesPerPixel;
+    my $imgSizeBlocks    = ($imgSizeBytes - ($imgSizeBytes % $blockSize)) / $blockSize + 1;
+
+    $self->{filesize} = ($imgSizeBlocks + $headerSizeBlocks) * $blockSize;
+
     return bless($self,$class);
 }
 
@@ -68,6 +77,8 @@ sub coord_system() { return shift->{coord_system} || 'FK5'; }
 sub title() { return shift->{title}; }
 
 sub instrument() { return shift->{instrument}; }
+
+sub filesize() { return shift->{filesize}; }
 
 sub imagetype() { return shift->{imagetype} || DEFAULT_RESULT_IMAGE_TYPE; }
 
