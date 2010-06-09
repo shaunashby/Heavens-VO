@@ -1,0 +1,25 @@
+<VOTABLE xmlns="http://www.ivoa.net/xml/VOTable/v1.1" version="1.1">
+  <RESOURCE type="results">
+    <INFO name="QUERY_STATUS" value="OK"/>
+    <TABLE nrows="1">
+      <FIELD name="Title" datatype="char" arraysize="*" ucd="VOX:Image_Title">
+        <DESCRIPTION>Image title</DESCRIPTION>
+      </FIELD>
+      <FIELD name="URL" datatype="char" arraysize="*" ucd="VOX:Image_AccessReference">
+        <DESCRIPTION>Image access URL</DESCRIPTION>
+      </FIELD>
+      <FIELD name="Format" datatype="char" arraysize="*" ucd="VOX:Image_Format">
+        <DESCRIPTION>MIME type of the image</DESCRIPTION>
+      </FIELD>
+      <DATA>
+        <TABLEDATA>
+          <TR>
+            <TD>___Title___</TD>
+            <TD>___URL___</TD>
+            <TD>image/fits</TD>
+          </TR>
+        </TABLEDATA>
+      </DATA>
+    </TABLE>
+  </RESOURCE>
+</VOTABLE>
