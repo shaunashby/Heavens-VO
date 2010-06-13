@@ -82,7 +82,9 @@ sub getData() {
 	    cd1_1 => 1000.,
 	    cd1_2 => 1000.,
 	    cd2_1 => 1000.,
-	    cd2_2 => 1000
+	    cd2_2 => 1000,
+	    size_a => 20.,
+	    size_b => 20.,
 	};
     }
     # Normal running:

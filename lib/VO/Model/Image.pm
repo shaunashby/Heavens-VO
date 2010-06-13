@@ -21,6 +21,11 @@ use VO::Model::WCS;
 use constant DEFAULT_RESULT_TYPE => 'image';
 use constant DEFAULT_RESULT_IMAGE_TYPE => 'SIGNIFICANCE';
 
+# For file size determination:
+use constant IMG_BYTES_PER_PIXEL     => 4;
+use constant IMG_BLOCK_SIZE          => 2880;
+use constant IMG_HEADER_SIZE_NBLOCKS => 3;
+
 use base 'VO::Model';
 
 sub new() {
@@ -53,15 +58,12 @@ sub new() {
     if (exists($params->{bandpass})) {
 	$self->{bandpass} = $params->{bandpass};
     }
-
+    
     # Calculate the file size:
-    my $bytesPerPixel    = 4;
-    my $blockSize        = 2880;
-    my $headerSizeBlocks = 3;
-    my $imgSizeBytes     = $self->{wcs_data}->{size_a} * $self->{wcs_data}->{size_b} * $bytesPerPixel;
-    my $imgSizeBlocks    = ($imgSizeBytes - ($imgSizeBytes % $blockSize)) / $blockSize + 1;
+    my $img_size_bytes     = $self->{size_a} * $self->{size_b} * IMG_BYTES_PER_PIXEL;
+    my $img_size_blocks    = ($img_size_bytes - ($img_size_bytes % IMG_BLOCK_SIZE)) / IMG_BLOCK_SIZE + 1;
 
-    $self->{filesize} = ($imgSizeBlocks + $headerSizeBlocks) * $blockSize;
+    $self->{filesize} = ($img_size_blocks + IMG_HEADER_SIZE_NBLOCKS) * IMG_BLOCK_SIZE;
 
     return bless($self,$class);
 }
