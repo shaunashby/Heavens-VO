@@ -17,7 +17,8 @@ use warnings;
 use Apache2::RequestRec ();
 use APR::Request::Apache2 ();
 
-use Apache2::Const -compile => qw(DECLINED OK SERVER_ERROR);
+use Apache2::Log;
+use Apache2::Const -compile => qw(DECLINED OK SERVER_ERROR :log);
 
 use VO::Model;
 use VO::Context;
@@ -49,10 +50,10 @@ sub handler() {
 			     format => $FORMAT,
                              intersect => $INTERSECT } );
 
-    my $votable = VO::Table->new({ template => 'cutout/votable.tpl', context => $context });
+    my $votable = VO::Table->new({ context => $context });
 
-    $votable->process($request) || do {
-     	$request->log_reason($votable->error());
+    $r->print($votable) || do {
+	$r->log_reason($votable->error());
 	return Apache2::Const::SERVER_ERROR;
     };
 

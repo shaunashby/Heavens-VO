@@ -87,17 +87,24 @@ sub subprocess_run() {
     my $data;
     if (PERLIO_IS_ENABLED || IO::Select->new($out_fh)->can_read(10)) {
 	$data = [ <$out_fh> ];
-	$self->{stdout} = $data;
+	$self->{stdout} = [];
+	map {
+	    chomp(my ($str) = $_);
+	    push(@{ $self->{stdout} },$str);
+	} @$data;
 	$self->{status} = 0;
     }
 
     # Read the error output:
     if (PERLIO_IS_ENABLED || IO::Select->new($err_fh)->can_read(10)) {
 	$data = [ <$err_fh> ];
-	$self->{stderr} = $data;
+	$self->{stderr} = [];
+	map {
+	    chomp(my ($str) = $_);
+	    push(@{ $self->{stderr} },$str);
+	} @$data;
+	$self->{status} = $#{ $self->{stderr} } + 1;
     }
-
-    $self->{status} = $#{$self->{stderr}} + 1;
 }
 
 sub ipc_run() {
