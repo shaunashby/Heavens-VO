@@ -89,6 +89,7 @@ sub getData() {
     }
     # Normal running:
     $self->{provider}->run( @{ $self->{args} } );
+
     # Store the data for the WCS attributes:
     map { chomp; my ($param,$value) = split("=",$_); $self->{wcs_data}->{lc($param)} = $value; } @{$self->{provider}->stdout};
     # Check that the required attributes exist in the object:

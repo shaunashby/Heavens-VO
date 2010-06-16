@@ -39,16 +39,3 @@ __END__
 #     *Apache2::Const::SERVER_ERROR = sub { 1 };
 #     *Apache2::Const::OK = sub { 0 };
 # }
-
-# sub run_tt() {
-#     my ($ttconfig) = @_;
-#     my $tt = Template->new($ttconfig);
-#     my $votemplate = "voMainResults.tpl";
-    
-#     $tt->process($votemplate, $vodata, $request) || do {
-#     	$request->log_reason($tt->error());
-#         return Apache2::Const::SERVER_ERROR();
-#     };
-    
-#     return Apache2::Const::OK();
-# }

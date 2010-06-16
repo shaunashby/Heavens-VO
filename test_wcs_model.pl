@@ -17,9 +17,13 @@ use VO;
 use VO::Config;
 
 
-my ($axis_ra, $axis_dec, $size_ra, $size_dec) = (83.6, 22., 20., 20.);
+my ($axis_ra, $axis_dec, $size_ra, $size_dec) = (228.6, 39.4, 20., 20.);
 
-my $instrument = 'JEMX';
+my $instrument = 'isgri';
+
+
+
+
 my $wcs_data = VO->model('VO::Model::WCS', { axis_ra  => $axis_ra,
 					     axis_dec => $axis_dec,
 					     size_ra  => $size_ra,
