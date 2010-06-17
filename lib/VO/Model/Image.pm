@@ -92,55 +92,60 @@ sub emin() { return shift->{emin}; }
 
 sub emax() { return shift->{emax}; }
 
+sub axis_a { return shift->{axis_a}; }
+
+sub axis_b { return shift->{axis_b}; }
+
+sub size_a { return shift->{size_a}; }
+
+sub size_b { return shift->{size_b}; }
+
+sub scale_a { return shift->{scale_a}; }
+
+sub scale_b { return shift->{scale_b}; }
+
+sub coordrefframe { return shift->{coordrefframe}; }
+
+sub coordequinox { return shift->{coordequinox}; }
+
+sub coordprojection { return shift->{coordprojection}; }
+
+sub coordrefpixel_a { return shift->{coordrefpixel_a}; }
+
+sub coordrefpixel_b { return shift->{coordrefpixel_b}; }
+
+sub coordrefvalue_a { return shift->{coordrefvalue_a}; }
+
+sub coordrefvalue_b { return shift->{coordrefvalue_b}; }
+
+sub cd1_1 { return shift->{cd1_1}; }
+
+sub cd1_2 { return shift->{cd1_2}; }
+
+sub cd2_1 { return shift->{cd2_1}; }
+
+sub cd2_2 { return shift->{cd2_2}; }
+
 1;
 
 __END__
-
-    # Using a protocol module
-    # -----------------------
-
-    # my $proto = Protocol::SIAP->new( { attributes => \%atts } );
-
-
-    # Then in some model where you've got some data from an external source (wcs_pixel_params),
-
-    # $proto->set_attribute_value('BPModalEnergy',123.4);
-
-
-    # Fields (attributes) listed in the protocol object are rendered in the RESOURCE block of the VO table.
-    # These fields are the metadata for the result type of the service:
-
-    # - cutout service result type is 'image'
-    # - image type protocol is SIA
-    # - easy to specify an extended protocol/restricted protocol to describe exactly what will be rendered in the VO table
-    
-
-    # WCS params are required per instrument, same values for all image types. Maybe Image model should inherit from the WCS
-    # model (perhaps it's more like an adaptor class in fact..), just passing in the instrument name
-    #
-    # VO->model('VO::Model::Image',{ instrument => [ i, j ] });
-    #
-    #
-
-
-1;
-
-__END__
-
-Axis_A=288.778149
-Axis_B=10.919604
-Size_A=20
-Size_B=20
-Scale_A=0.021390
-Scale_B=0.021390
-CoordRefFrame=FK5
-CoordEquinox=2000
-CoordProjection=STG
-CoordRefPixel_A=-1872.5
-CoordRefPixel_B=20.5
-CoordRefValue_A=90.000000
-CoordRefValue_B=0.000000
-CD1_1=-0.0250000000000000
-CD1_2=0.0000000000000000
-CD2_1=0.0000000000000000
-CD2_2=0.0250000000000000
+#
+# Using a protocol module
+# -----------------------
+#
+# my $proto = Protocol::SIAP->new( { attributes => \%atts } );
+#
+#
+# Then in some model where you've got some data from an external source (wcs_pixel_params),
+#
+# $proto->set_attribute_value('BPModalEnergy',123.4);
+#
+#
+# Fields (attributes) listed in the protocol object are rendered in the RESOURCE block of the VO table.
+# These fields are the metadata for the result type of the service:
+#
+# - cutout service result type is 'image'
+# - image type protocol is SIA
+# - easy to specify an extended protocol/restricted protocol to describe exactly what will be rendered in the VO table
+#
+#
