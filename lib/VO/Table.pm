@@ -48,21 +48,21 @@ sub error() { return sprintf("VO::Table::process: %s\n",shift->{tt}->error()); }
 
 sub render() {
     my $self = shift;
-    my $content = '';
+    my $out = shift || '';
     
     # Check for a template:
     if (exists($self->{template})) {
-	$self->{tt}->process($self->{template}, $self->{vodata},\$content);
+	$self->{tt}->process($self->{template}, $self->{vodata}, \$out);
     } else {
-	$self->{tt}->process(\*DATA, $self->{vodata},\$content);
+	$self->{tt}->process(\*DATA, $self->{vodata}, \$out);
     }
-    return $content;
+    return $out;
 }
 
 sub process() {
     my $self = shift;
-    my $content = (ref($_[0]) eq 'SCALAR') ? shift : croak("process method takes ref to output variable.");
-    $self->{tt}->process(\*DATA, $self->{vodata},$content);
+    my ($out) =@_;
+    $self->{tt}->process(\*DATA, $self->{vodata}, $out);
 }
 
 1;
