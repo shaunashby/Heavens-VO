@@ -21,6 +21,8 @@ use mod_perl2;
 use constant MP2 => (exists($ENV{MOD_PERL_API_VERSION}) and $ENV{MOD_PERL_API_VERSION} >= 2 );
 use constant PERLIO_IS_ENABLED => $Config{useperlio};
 
+use constant USE_PERL_OPEN => 0;
+
 use IPC::Cmd;
 
 sub new() {
@@ -56,6 +58,8 @@ sub run() {
     # otherwise just use IPC::Cmd:
     if (MP2) {
 	$self->subprocess_run(@args);
+    } elsif (USE_PERL_OPEN) {
+	$self->run_using_open(@args);
     } else {
 	$self->ipc_run(@args);
     }
@@ -140,6 +144,47 @@ sub ipc_run() {
 	    $self->{stdout} = [ map { $_."\n" } split(/\n/,$stdout_buf->[0] ) ];
 	    $self->{stderr} = [ map { $_."\n" } split(/\n/,$stderr_buf->[0] ) ];
 	}
+    }
+}
+
+sub run_using_open() {
+    my ($self, @args) = @_;
+    my $outbuf = [];
+    my $success = 1;
+    
+    $self->{stderr} = [];
+    $self->{stdout} = [];
+    
+    # Set up the environment:
+    map {
+	$ENV{$_} = $self->{provider_env}->{$_};
+    } keys %{ $self->{provider_env} };
+    
+    my $cmd = sprintf("%s %s %s %s %s %s %s",$self->{provider_exe},@args);
+
+    open(EXE,"$cmd |") || die "Unable to run $cmd: $!";
+
+    while (<EXE>) {
+	chomp;
+	push(@$outbuf,$_);
+	if (my ($err) = ($_ =~ /Error.*? with status (.*?)$/)) {
+	    $self->{status} = $err;
+	    $success = 0;
+	}
+    }
+    close(EXE);
+
+    # Collect errors under stderr buffer:
+    if (!$success) {
+ 	$self->{stderr} = [ grep { $_ =~ /Error/ } @$outbuf ];
+ 	$self->{stdout} = $outbuf;
+    } else {
+	# Set status to 0:
+	$self->{status} = 0;
+ 	{
+ 	    no warnings 'uninitialized';
+	    $self->{stdout} = $outbuf;
+ 	}
     }
 }
 

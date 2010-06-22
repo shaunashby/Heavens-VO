@@ -90,8 +90,14 @@ sub getData() {
     # Normal running:
     $self->{provider}->run( @{ $self->{args} } );
 
+    # Check error status:
+    if ($self->{provider}->status) {
+	croak("Model::WCS: ",join(" ",@{ $self->{provider}->stderr }));
+    }
+    
     # Store the data for the WCS attributes:
     map { chomp; my ($param,$value) = split("=",$_); $self->{wcs_data}->{lc($param)} = $value; } @{$self->{provider}->stdout};
+
     # Check that the required attributes exist in the object:
     for my $att (@required_attribute_names) {
 	croak("Model::WCS: ERROR in running executable for WCS - $att not found in object attributes.")
