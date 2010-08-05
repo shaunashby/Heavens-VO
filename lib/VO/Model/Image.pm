@@ -37,7 +37,7 @@ sub new() {
  	: croak("Image model constructor needs a parameter hash ref arg.");
 
     # Populate the image with the WCS parameters:
-    my $self = VO::Model::WCS->new($params)->getData;
+    my $self = VO::Model::WCS->new($params);
     
     # Extract the required image parameters from the params. These
     # are values for which there are no sensible defaults so we
