@@ -28,7 +28,7 @@ my $wcs_data = VO->model('VO::Model::WCS', { axis_ra  => $axis_ra,
 					     axis_dec => $axis_dec,
 					     size_ra  => $size_ra,
 					     size_dec => $size_dec,
-					     instrument => $instrument } )->getData();
+					     instrument => $instrument } );
 
 use Data::Dumper; print Dumper($wcs_data);
 

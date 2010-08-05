@@ -4,8 +4,6 @@ use VO::Service::Cutout;
 use VO::Context;
 use VO::Table;
 
-$ENV{WCS_TEST_MODE} = 0; # = 1 for test mode, meaning only cd_x_y params will be set to 1000.
-
 my $ctx = VO::Context->new;
 my $cs = VO::Service::Cutout->new({ context => $ctx });
 

@@ -14,4 +14,5 @@ my $model = VO::Model::WCS->new({ axis_ra  => $axis_ra,
 				  size_ra  => $size_ra,
 				  size_dec => $size_dec,
 				  instrument => $instrument });
-can_ok($model,'getData');
+# Check to see if at least one data member is correct:
+ok($model->{size_a} == 20, "WCS model OK.");
