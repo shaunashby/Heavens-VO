@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'VO::Service::Cutout',
-    AUTHOR              => 'Shaun ASHBY <shuan.ashby@unige.ch>',
+    AUTHOR              => 'Shaun ASHBY <shaun.ashby@unige.ch>',
     VERSION_FROM        => 'lib/VO/Service/Cutout.pm',
     ABSTRACT_FROM       => 'lib/VO/Service/Cutout.pm',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
