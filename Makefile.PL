@@ -14,7 +14,8 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
 	'IPC::Cmd' => 0,
-	'YAML::Syck' => 0
+	'YAML::Syck' => 0,
+	'Pixel::WCS' => 0
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Heavens-VO-*' },
