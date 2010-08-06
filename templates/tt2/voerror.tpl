@@ -1,7 +1,5 @@
-<VOTABLE xmlns="http://www.ivoa.net/xml/VOTable/v1.1" version="1.1">
-  <RESOURCE type="results">
-  	<INFO name="QUERY_STATUS" value="ERROR">
-        errorMessage = [% errorMessage %]
-  	</INFO>
-  </RESOURCE>
-</VOTABLE>
+  <INFO name="QUERY_STATUS" value="[% query_status %]">
+[% FOREACH error IN context.errors -%]
+      errorMessage = VO::QueryStatus::[% error.type %] - [% error.what -%]
+[% END %]
+  </INFO>

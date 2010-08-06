@@ -23,7 +23,12 @@ sub new() {
 sub stash() { return shift->{stash}; }
 
 sub errors() { return shift->{errors}; } 
-	      
+
+sub error() {
+    my $self = shift;
+    return $#{$self->{errors}} + 1;   
+}
+
 1;
 
 __END__
