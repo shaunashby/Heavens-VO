@@ -7,10 +7,12 @@ use VO::Table;
 my $ctx = VO::Context->new;
 my $cs = VO::Service::Cutout->new({ context => $ctx });
 
-my $POS    = "299.6,+35.2"; # Good values
+my $POS    = "299.59,+35.2"; # Good values
 my $SIZE   = "20,20";
 my $FORMAT = "image%2Ffits";
 my $INTERSECT = 'OVERLAPS';
+
+print "\n";
 
 $cs->image_query( { pos    => $POS,
 		    size   => $SIZE,
@@ -18,7 +20,9 @@ $cs->image_query( { pos    => $POS,
                     intersect => $INTERSECT } );
 
 if ($cs->status) {
-    map { print $_->what."\n"; } @{ $ctx->errors };
+print "\n\n--- Dumping errors ---\n";
+    map { printf("VO::QueryStatus::%s -- %s\n", $_->type,$_->what); } @{ $ctx->errors };
+print "------------\n\n";
 }
 
 # Render test:
@@ -27,13 +31,8 @@ my $output = '';
 
 $votable->process(\$output) || die $votable->error;
 
+print "=============== Directly printing the output string ================\n";
 print $output,"\n";
+print "================ Printing with overloaded string op calling render ============\n";
 print "$votable","\n";
 
-__END__
-
-# {
-#     *_GET_PACKAGE_VERSION = sub () { $VERSION };
-#     *Apache2::Const::SERVER_ERROR = sub { 1 };
-#     *Apache2::Const::OK = sub { 0 };
-# }
