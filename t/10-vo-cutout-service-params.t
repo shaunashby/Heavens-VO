@@ -5,8 +5,6 @@ use Test::More tests => 7;
 use VO;
 use VO::Service::Cutout;
 
-$ENV{WCS_TEST_MODE} = 1; # don't actually run the wcs executable since it hangs under test_harness.
-
 my $context1 = VO->context;
 my $service1 = VO::Service::Cutout->new({ context => $context1 });
 
