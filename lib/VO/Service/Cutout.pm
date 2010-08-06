@@ -31,14 +31,19 @@ sub image_query() {
     if (exists($options->{pos})) {
 	# Get RA and DEC of the requested position:
 	($axis_ra, $axis_dec) = split(",", $options->{pos});
-	# Validate the RA/DEC values:
-	if ( (0 >= $axis_ra) || (360 < $axis_ra) ) {
-	    $self->error(VO::QueryStatus::ERROR,"RA must be in the range 0,360.");
-	    return;
-	}
-	
-	if ( (-90 >= $axis_dec) || (90 <= $axis_dec) ) {
-	    $self->error(VO::QueryStatus::ERROR,"DEC must be in the range -90,90.");
+	# Validate the RA/DEC values. Check for empty strings as arg:
+	if (defined($axis_ra) && defined($axis_dec) && ($axis_ra ne "") && ($axis_dec ne "")) {
+	    if ( (0 >= $axis_ra) || (360 < $axis_ra) ) {
+		$self->error(VO::QueryStatus::ERROR,"RA must be in the range 0,360.");
+		return;
+	    }
+	    
+	    if ( (-90 >= $axis_dec) || (90 <= $axis_dec) ) {
+		$self->error(VO::QueryStatus::ERROR,"DEC must be in the range -90,90.");
+		return;
+	    }
+	} else {
+	    $self->error(VO::QueryStatus::ERROR,"RA/DEC must be numeric and in range (0,360) and (-90,90).");
 	    return;
 	}
     } else {
@@ -49,10 +54,16 @@ sub image_query() {
     
     if (exists($options->{size})) {
 	($size_ra, $size_dec) = split(",", $options->{size});
-	$size_dec ||= $size_ra; # Same value for both axes if only one given
-	# Check to make sure that the size parameter is within limits for the service:
-	if ($size_ra > DEFAULT_CUTOUT_IMAGE_MAX_SIZE || $size_dec > DEFAULT_CUTOUT_IMAGE_MAX_SIZE) {
-	    $self->error(VO::QueryStatus::OVERFLOW,"SIZE exceeds maximum allowed image size.");
+	# Check for empty strings as arg:
+	if (defined($size_ra) && $size_ra ne "") {
+	    $size_dec ||= $size_ra; # Same value for both axes if only one given
+	    # Check to make sure that the size parameter is within limits for the service.
+	    if ($size_ra > DEFAULT_CUTOUT_IMAGE_MAX_SIZE || $size_dec > DEFAULT_CUTOUT_IMAGE_MAX_SIZE) {
+		$self->error(VO::QueryStatus::OVERFLOW,"SIZE exceeds maximum allowed image size.");
+		return;
+	    }
+	} else {
+	    $self->error(VO::QueryStatus::ERROR,"SIZE must be an integer value.");
 	    return;
 	}
     } else {
@@ -73,7 +84,7 @@ sub image_query() {
 
     # Value of FORMAT parameter:
     $format = 'ALL';
-    if (exists($options->{format}) && (
+    if (defined($options->{format}) && (
 	    $options->{format} =~ m|image/*| || $options->{format} =~ /ALL|GRPAHIC|METADATA/)) {
 	#
 	# Supported types are
