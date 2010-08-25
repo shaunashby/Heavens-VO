@@ -126,6 +126,8 @@ sub cd2_1 { return shift->{cd2_1}; }
 
 sub cd2_2 { return shift->{cd2_2}; }
 
+sub DESTROY {} # Currently not needed but left for future use
+
 1;
 
 __END__

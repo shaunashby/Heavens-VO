@@ -34,6 +34,12 @@ sub nrows() { return $#{ shift->{rows} } + 1; }
 
 sub rows() { return shift->{rows}; }
 
+sub DESTROY {
+    my $self = shift;
+    # Delete the stored model objects:
+    map { undef $_ } @{$self->{rows}};
+}
+
 1;
 
 __END__

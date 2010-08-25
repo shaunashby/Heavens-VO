@@ -107,13 +107,19 @@ sub image_query() {
     # Do the search using a ResultSet to access data and return model objects. Display results for the image
     # configuration we specify in the service definition (service.yml) which will be read by the VO::Service base class
     # and stored in the service_config attribute within the context. Access this using the config() method:
-    my $resultset = VO::ResultSet::Image->new('VO::Model::Image');
+    $self->{resultset} = VO::ResultSet::Image->new('VO::Model::Image');
 
     # Store the resultset in the context:
-    $self->context()->{resultset} = $resultset->search($self->config,{ axis_ra  => $axis_ra,
-								       axis_dec => $axis_dec,
-								       size_ra  => $size_ra,
-								       size_dec => $size_dec, });
+    $self->context()->{resultset} = $self->{resultset}->search($self->config,{ axis_ra  => $axis_ra,
+									       axis_dec => $axis_dec,
+									       size_ra  => $size_ra,
+									       size_dec => $size_dec, });
+}
+
+sub DESTROY {
+    my $self = shift;
+    # Clean up the model objects via the containing resultset:
+    delete $self->{resultset};
 }
 
 1;

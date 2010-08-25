@@ -29,6 +29,11 @@ sub error() {
     return $#{$self->{errors}} + 1;   
 }
 
+sub DESTROY {
+    my $self = shift;
+    delete $self->{stash};
+}
+
 1;
 
 __END__
