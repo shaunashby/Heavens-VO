@@ -48,14 +48,23 @@ sub handler() {
 
     $service->image_query( { pos => $POS, size => $SIZE, format => $FORMAT, intersect => $INTERSECT } );
 
-    my $votable = VO::Table->new( { context => $context } );
+    my $votable = VO::Table->new( { context => $context, template => 'votable.tpl' } );
 
+    $r->content_type("text/xml");
+    $r->headers_out->add( "VO-Request-Time" => $r->request_time() );
+    $r->connection->keepalive(1);
+    
     # Render the votable:
-    $votable->process($r) || do {
+    $r->print("$votable") || do {
 	$r->warn(__PACKAGE__.": Not able to render template.");
 	$r->log_reason($votable->error());
 	return Apache2::Const::SERVER_ERROR;
     };
+
+    # Clean up:
+    undef $votable;
+    undef $service;
+    undef $context;
 
     return Apache2::Const::OK;
 }
